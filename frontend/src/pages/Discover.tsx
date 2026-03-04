@@ -59,26 +59,6 @@ const Discover = () => {
   return (
     <div className="min-h-screen bg-root py-10 px-6">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Discover Events</h1>
-          <p className="text-gray-500 text-lg">
-            Find events that match your interests and connect with your community.
-          </p>
-        </div>
-
-        {/* Search bar */}
-        <div className="flex gap-3 mb-10 max-w-2xl mx-auto">
-          <input
-            type="text"
-            placeholder="Search events, locations, categories..."
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-          <button className="px-6 py-3 bg-green-700 text-white rounded-lg font-semibold text-sm hover:bg-green-800 transition-colors">
-            Search
-          </button>
-        </div>
-
         {/* Event Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {mockEvents.map((event) => (

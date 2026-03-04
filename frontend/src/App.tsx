@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Discover from "./pages/Discover";
 import CreateEvent from "./pages/CreateEvent";
 import Profile from "./pages/Profile";
+import Faq from "./pages/Faq";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
@@ -53,6 +54,15 @@ function App() {
           element={
             <MainLayout>
               <Profile />
+            </MainLayout>
+          }
+        />
+
+        <Route
+          path="/faq"
+          element={
+            <MainLayout>
+              <Faq />
             </MainLayout>
           }
         />

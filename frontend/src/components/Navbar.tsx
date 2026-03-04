@@ -10,6 +10,7 @@ const Navbar = () => {
     { label: "Discover", to: "/discover" },
     { label: "Create Event", to: "/create-event" },
     { label: "Profile", to: "/profile" },
+    { label: "FAQ", to: "/faq" },
   ];
 
   const isActive = (path: string) =>

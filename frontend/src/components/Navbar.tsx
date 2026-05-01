@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated, user, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navLinks = [
@@ -17,6 +20,11 @@ const Navbar = () => {
     location.pathname === path
       ? "text-green-800 font-bold border-b-2 border-green-700"
       : "text-green-600 hover:text-green-800";
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-30 bg-white shadow-sm">
@@ -41,20 +49,36 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Auth buttons */}
+        {/* Auth area */}
         <div className="hidden md:flex items-center gap-3">
-          <Link
-            to="/login"
-            className="text-sm font-semibold text-green-700 px-4 py-2 rounded-md border border-green-600 hover:bg-green-50 transition-colors"
-          >
-            Log in
-          </Link>
-          <Link
-            to="/signup"
-            className="text-sm font-semibold text-white px-4 py-2 rounded-md bg-green-700 hover:bg-green-800 transition-colors"
-          >
-            Sign Up
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <span className="text-sm text-gray-600 font-medium">
+                @{user?.username}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="text-sm font-semibold text-white px-4 py-2 rounded-md bg-green-700 hover:bg-green-800 transition-colors"
+              >
+                Log out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="text-sm font-semibold text-green-700 px-4 py-2 rounded-md border border-green-600 hover:bg-green-50 transition-colors"
+              >
+                Log in
+              </Link>
+              <Link
+                to="/signup"
+                className="text-sm font-semibold text-white px-4 py-2 rounded-md bg-green-700 hover:bg-green-800 transition-colors"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Hamburger */}
@@ -64,34 +88,12 @@ const Navbar = () => {
           aria-label="Toggle menu"
         >
           {mobileOpen ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           )}
         </button>
@@ -111,20 +113,19 @@ const Navbar = () => {
             </Link>
           ))}
           <hr className="border-gray-200 my-1" />
-          <Link
-            to="/login"
-            onClick={() => setMobileOpen(false)}
-            className="text-sm font-semibold text-green-700"
-          >
-            Log in
-          </Link>
-          <Link
-            to="/signup"
-            onClick={() => setMobileOpen(false)}
-            className="text-sm font-semibold text-green-700"
-          >
-            Sign Up
-          </Link>
+          {isAuthenticated ? (
+            <button
+              onClick={() => { handleLogout(); setMobileOpen(false); }}
+              className="text-sm font-semibold text-left text-red-600"
+            >
+              Log out (@{user?.username})
+            </button>
+          ) : (
+            <>
+              <Link to="/login" onClick={() => setMobileOpen(false)} className="text-sm font-semibold text-green-700">Log in</Link>
+              <Link to="/signup" onClick={() => setMobileOpen(false)} className="text-sm font-semibold text-green-700">Sign Up</Link>
+            </>
+          )}
         </div>
       )}
     </nav>

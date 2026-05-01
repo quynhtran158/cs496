@@ -1,0 +1,39 @@
+services:
+  # ── Backend (Express + Socket.io) ─────────────────────────────────────────────
+  - type: web
+    name: cs496-backend
+    runtime: node
+    region: oregon
+    plan: free
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false          # ← you'll paste the value in Render's dashboard
+      - key: JWT_SECRET
+        generateValue: true  # ← Render auto-generates a secure secret for you
+      - key: FRONTEND_URL
+        # After the frontend deploys, update this with your frontend's URL
+        value: https://cs496-frontend.onrender.com
+
+  # ── Frontend (React + Vite → Static Site) ────────────────────────────────────
+  - type: web
+    name: cs496-frontend
+    runtime: static
+    region: oregon
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://cs496-backend.onrender.com
+    routes:
+      # SPA fallback: serve index.html for all routes (React Router)
+      - type: rewrite
+        source: /*
+        destination: /index.html
